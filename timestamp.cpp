@@ -136,8 +136,8 @@ public:
 int main() {
     const auto tomorrow = std::chrono::time_point_cast<std::chrono::minutes>(std::chrono::ceil<std::chrono::days>(std::chrono::system_clock::now()));
     const auto today = std::chrono::time_point_cast<std::chrono::minutes>(std::chrono::system_clock::now());
-    const std::chrono::duration<int, std::ratio<60>> elapsed_min = tomorrow - today;
-    const int remaining_minutes_until_midnight = elapsed_min.count();
+    const std::chrono::duration elapsed_min = tomorrow - today;
+    const int remaining_minutes_until_midnight = elapsed_min;
     return 0;
 }
 
