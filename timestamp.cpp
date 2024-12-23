@@ -98,32 +98,32 @@ public:
         hour = 2
     };
 
-    template<time_mode mode>
-    inline auto time_diff(const timestamp& other) const {
+        template<time_mode mode>
+        inline auto time_diff(const timestamp& other) const {
 
-        std::chrono::system_clock::time_point other_time{ std::chrono::microseconds{other.raw_value()} };
-        std::chrono::system_clock::time_point this_time{ std::chrono::microseconds{this->raw_value()} };
+            std::chrono::system_clock::time_point other_time{ std::chrono::microseconds{other.raw_value()} };
+            std::chrono::system_clock::time_point this_time{ std::chrono::microseconds{this->raw_value()} };
 
-        if constexpr (mode == time_mode::sec) {
-            auto other_sec = std::chrono::time_point_cast<std::chrono::seconds>(other_time);
-            auto this_sec = std::chrono::time_point_cast<std::chrono::seconds>(this_time);
-            std::chrono::duration<double> elapsed_sec = this_sec - other_sec;
-            return elapsed_sec;
-        }
-        else if constexpr (mode == time_mode::min) {
-            auto other_min = std::chrono::time_point_cast<std::chrono::minutes>(other_time);
-            auto this_min = std::chrono::time_point_cast<std::chrono::minutes>(this_time);
-            std::chrono::duration<double, std::ratio<60>> elapsed_min = this_min - other_min;
-            return elapsed_min;
+            if constexpr (mode == time_mode::sec) {
+                auto other_sec = std::chrono::time_point_cast<std::chrono::seconds>(other_time);
+                auto this_sec = std::chrono::time_point_cast<std::chrono::seconds>(this_time);
+                std::chrono::duration elapsed_sec = this_sec - other_sec;
+                return elapsed_sec.count();
+            }
+            else if constexpr (mode == time_mode::min) {
+                auto other_min = std::chrono::time_point_cast<std::chrono::minutes>(other_time);
+                auto this_min = std::chrono::time_point_cast<std::chrono::minutes>(this_time);
+                std::chrono::duration elapsed_min = this_min - other_min;
+                return elapsed_min.count();
 
+            }
+            else if constexpr (mode == time_mode::hour) {
+                auto other_hour = std::chrono::time_point_cast<std::chrono::hours>(other_time);
+                auto this_hour = std::chrono::time_point_cast<std::chrono::hours>(this_time);
+                std::chrono::duration elapsed_hours = this_hour - other_hour;
+                return elapsed_hours.count();
+            }
         }
-        else if constexpr (mode == time_mode::hour) {
-            auto other_hour = std::chrono::time_point_cast<std::chrono::hours>(other_time);
-            auto this_hour = std::chrono::time_point_cast<std::chrono::hours>(this_time);
-            std::chrono::duration<double, std::ratio<3600>> elapsed_hours = this_hour - other_hour;
-            return elapsed_hours;
-        }
-    }
 
     inline friend bool operator==(timestamp t1, timestamp t2) = default;
 
